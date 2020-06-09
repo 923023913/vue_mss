@@ -1,12 +1,18 @@
 <template>
-   <div class="main">
-       
-   </div>
+  <div class="main">
+    <!-- 面包屑导航 -->
+    <app-link v-show="$route.path !== '/home'"></app-link>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
+import AppLink from './Link'
 export default {
   name: 'Main',
+  components:{
+    AppLink
+  }
 }
 </script>
 

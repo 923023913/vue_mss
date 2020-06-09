@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import loginApi from '../../api/login'
+import { login, getInfo } from '../../api/login'
 export default {
   name: 'Login',
   data () {
@@ -100,9 +100,7 @@ export default {
         // 如果账号和密码都符合正则，那么就发送请求
         if (valid) {
           // 调用登录接口
-           this.getLogin()
-
-
+          this.getLogin()
         } else {  // 账号和密码不符合正则,弹出提示
           console.log('error submit!!');
           return false;
@@ -111,37 +109,50 @@ export default {
     },
     // 登录接口
     async getLogin () {
-      await loginApi.login(this.form.username, this.form.password).then(res => {
+      await login(this.form.username, this.form.password).then(res => {
         const resp = res.data
-        if (resp.code == 200) {
-          // 将用户信息存储到本地
-          window.localStorage.setItem('adminInfo', JSON.stringify(resp.data))
+        if (resp.flag) {
           // 将token存储到本地
-          window.localStorage.setItem('adminToken', resp.data.remember_token)
+          window.localStorage.setItem('adminToken', resp.data.token)
           // 调用 用户信息接口
-          this.getInfo()
-          // 跳转到首页
-          this.$router.push('/')
+          this.getInfo(resp.data.token)
         } else {
           this.$message({
             duration: 1 * 2000,
             showClose: true,
-            message: resp.msg,
+            message: resp.message,
             type: 'warning'
           });
+          return false
         }
       }).catch(error => {
-        console.log(error)
+        // console.log(error)
+        return false
       })
     },
     // 获取用户信息接口
-    getInfo () {
-      loginApi.getInfo().then(res => {
-        if (res.data.code == 200) {
-          window.localStorage.setItem('adminList',JSON.stringify(res.data.rows))
+    getInfo (token) {
+      getInfo(token).then(res => {
+        const resUser = res.data
+        if (resUser.flag) {
+          // 将用户信息保存在本地
+          window.localStorage.setItem('adminInfo', JSON.stringify(resUser.data))
+          // Loading加载动画
+          const loading = this.$loading({
+            lock: true,
+            text: '登录中...',
+            // spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          });
+          setTimeout(() => {
+            loading.close();
+            // 跳转到首页
+            this.$router.push('/')
+          }, 2000);
         }
       }).catch(error => {
-        console.log(error)
+        // console.log(error)
+        return false
       })
     }
   },

@@ -53,7 +53,7 @@ export default {
 /* 左侧导航栏 */
 .navbar {
   position: absolute;
-  widows: 230px;
+  width: 230px;
   top: 50px;
   left: 0;
   bottom: 0;
@@ -69,6 +69,5 @@ export default {
   bottom: 0;
   padding: 10px;
   overflow-y: auto;
-  background-color: red;
 }
 </style>

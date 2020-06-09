@@ -8,10 +8,15 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 // 使用element-ui
 Vue.use(ElementUI);
-//
+// 引入echarts 图表库
+import echarts from 'echarts'
+// 全局挂载echarts
+Vue.prototype.$echarts = echarts
+// 是否切换生产环境
 Vue.config.productionTip = process.env.NODE_ENV == "production";
-// 检测当前是开发环境还是生产环境
-console.log(process.env.NODE_ENV);
+// 路由全局守卫
+import './permission'
+
 new Vue({
   router,
   store,
