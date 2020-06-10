@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" id="main">
     <!-- 面包屑导航 -->
     <app-link v-show="$route.path !== '/home'"></app-link>
     <router-view></router-view>
