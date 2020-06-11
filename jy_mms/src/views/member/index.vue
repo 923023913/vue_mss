@@ -230,7 +230,7 @@
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="dialogFormVisible = false"
+          @click="createData('createForm')"
         >确 定</el-button>
       </div>
     </el-dialog>
@@ -299,6 +299,14 @@ export default {
     },
   },
   methods: {
+    // 点击新增弹框的确定新增数据
+    createData (formName) {
+      this.$refs[formName].validate(valid=>{
+        if (valid) {
+          
+        }
+      })
+    },
     // 点击重置
     resetForm (formName) {
       this.$refs[formName].resetFields();
